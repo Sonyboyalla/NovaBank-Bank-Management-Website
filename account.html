@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Account details{% endblock %}{% block crumb %}Account details{% endblock %}
+{% block content %}
+<section class="page-heading"><div><div class="eyebrow">ACCOUNT INFORMATION</div><h1>{{ account.holder_name }}</h1><p>{{ account.account_number }} · {{ account.account_type }} account</p></div><a class="button button-outline" href="{{ url_for('dashboard') }}">← Back to overview</a></section>
+<div class="detail-balance"><div><span>AVAILABLE BALANCE</span><h2>{{ account.balance_paise|inr }}</h2><p>Account holder: {{ account.holder_name }}</p></div><div class="detail-chip">N</div></div>
+<div class="section-heading detail-heading"><div><h2>Account transactions</h2><p>Activity for {{ account.account_number }}.</p></div></div>
+{% if transactions %}<div class="table-wrap"><table><thead><tr><th>TYPE</th><th>DESCRIPTION</th><th>RELATED ACCOUNT</th><th>DATE & TIME</th><th>AMOUNT</th></tr></thead><tbody>{% for t in transactions %}<tr><td><strong>{{ t.transaction_type }}</strong></td><td>{{ t.description }}</td><td>{{ t.related_number or '—' }}</td><td>{{ t.created_at[:16].replace('T',' ') }}</td><td class="{% if t.transaction_type in ['Credit','Transfer In'] %}amount-positive{% else %}amount-negative{% endif %}">{{ '+' if t.transaction_type in ['Credit','Transfer In'] else '−' }}{{ t.amount_paise|inr }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state"><p>No transactions for this account yet.</p></div>{% endif %}
+{% endblock %}

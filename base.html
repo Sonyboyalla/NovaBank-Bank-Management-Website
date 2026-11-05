@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}NovaBank{% endblock %} | Bank Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script defer src="{{ url_for('static', filename='js/app.js') }}"></script>
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <a class="brand" href="{{ url_for('dashboard') }}"><span class="brand-mark">N</span><span>nova<span class="brand-light">bank</span></span></a>
+    <div class="nav-caption">WORKSPACE</div>
+    <nav>
+      <a class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}"><span>▦</span> Overview</a>
+      <a class="nav-link {% if request.endpoint == 'history' %}active{% endif %}" href="{{ url_for('history') }}"><span>↗</span> Transactions</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="secure-card"><div class="secure-icon">✓</div><strong>Local demo banking</strong><p>Practice transactions safely. No real money is moved.</p></div>
+      <div class="profile"><div class="avatar">AD</div><div><strong>Admin User</strong><small>Administrator</small></div><span class="profile-dots">•••</span></div>
+    </div>
+  </aside>
+  <main class="main-content">
+    <header class="topbar"><div class="mobile-brand">N <b>novabank</b></div><div class="breadcrumb">Workspace <span>/</span> {% block crumb %}Overview{% endblock %}</div><div class="topbar-right"><span class="live-dot"></span> System online <div class="top-avatar">AD</div></div></header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}<div class="flash-stack">{% for category, message in messages %}<div class="flash {{ category }}"><span>{{ '✓' if category == 'success' else '!' }}</span>{{ message }}<button type="button" aria-label="Dismiss" onclick="this.parentElement.remove()">×</button></div>{% endfor %}</div>{% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+    <footer>© 2026 NovaBank · Demonstration banking application</footer>
+  </main>
+</div>
+</body></html>
